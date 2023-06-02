@@ -1,0 +1,29 @@
+.background {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#hex {
+  height: 40px;
+  border: none;
+  outline: none;
+  border: 2px solid rgba(128, 128, 128, 0.541);
+  border-radius: 5px;
+  font-size: 25px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.rgb {
+  min-width: 280px;
+  height: 40px;
+  padding: 15px;
+  background-color: rgba(128, 128, 128, 0.534);
+  color: white;
+  text-align: center;
+  font-size: 28px;
+}
