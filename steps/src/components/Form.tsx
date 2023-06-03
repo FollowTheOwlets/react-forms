@@ -3,15 +3,12 @@ import { IWorkout } from '../models/IWorkout'
 import { List } from './List';
 import WorkoutComparator from '../utils/WorkoutComparator';
 
-export const Form = () => {
-    const [workouts, SetWorkouts] = useState<IWorkout[]>([]);
+interface IFormProps {
+    SetWorkouts: React.Dispatch<React.SetStateAction<IWorkout[]>>;
+}
+export const Form = ({ SetWorkouts }: IFormProps) => {
     const date = useRef<HTMLInputElement | null>(null);
     const length = useRef<HTMLInputElement | null>(null);
-
-
-    const deleteWorckoutPattern = (w: IWorkout) => (event: React.MouseEvent<HTMLElement>) => {
-        SetWorkouts(workouts.filter((e) => e !== w));
-    }
 
     const handleAddWorckout: MouseEventHandler<HTMLButtonElement> = (event) => {
         event.preventDefault();
@@ -22,13 +19,15 @@ export const Form = () => {
             if (!/^([\d]{2}).([\d]{2}).([\d]{4})$/i.exec(workout.date)) { return; }
             if (!workout.length) { return; }
 
-            let copies = workouts.filter((e) => e.date === workout.date);
-            if (copies.length == 0) {
-                SetWorkouts((prev) => [...prev, workout].sort(WorkoutComparator.compare))
-            } else {
-                workout.length += copies[0].length;
-                SetWorkouts((prev) => [...prev.filter((e) => e.date !== workout.date), workout].sort(WorkoutComparator.compare))
-            }
+            SetWorkouts((prev) => {
+                let copies = prev.filter((e) => e.date === workout.date);
+                if (copies.length == 0) {
+                    return [...prev, workout].sort(WorkoutComparator.compare);
+                } else {
+                    workout.length += copies[0].length;
+                    return [...prev.filter((e) => e.date !== workout.date), workout].sort(WorkoutComparator.compare);
+                }
+            })
         }
 
     }
@@ -47,7 +46,6 @@ export const Form = () => {
                 </div>
                 <button onClick={handleAddWorckout}>ОК</button>
             </div>
-            <List workouts={workouts} onDeleteClickPattern={deleteWorckoutPattern} />
         </form>
     )
 }
